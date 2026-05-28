@@ -1,13 +1,9 @@
 import { useState } from 'react'
+import { send } from '@emailjs/browser'
 
-function encode(data) {
-  return Object.keys(data)
-    .map(
-      (key) =>
-        encodeURIComponent(key) + '=' + encodeURIComponent(data[key]),
-    )
-    .join('&')
-}
+const EMAILJS_SERVICE_ID = 'service_2ix40f2'
+const EMAILJS_TEMPLATE_ID = 'template_lmnnu9u'
+const EMAILJS_PUBLIC_KEY = 'KuEOHJmOosbt4Nfqw'
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false)
@@ -36,15 +32,21 @@ export default function ContactForm() {
     }
 
     try {
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'contact', ...formData }),
-      })
+      await send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        EMAILJS_PUBLIC_KEY,
+      )
 
       setSubmitted(true)
       setError('')
       setFormData({ name: '', email: '', message: '' })
+      form.reset()
     } catch (submitError) {
       setError('Oops! Something went wrong. Please try again.')
       console.error(submitError)
@@ -78,14 +80,7 @@ export default function ContactForm() {
               </p>
             </div>
           ) : (
-            <form
-              name="contact"
-              method="POST"
-              data-netlify="true"
-              onSubmit={handleSubmit}
-              className="space-y-6"
-            >
-              <input type="hidden" name="form-name" value="contact" />
+            <form onSubmit={handleSubmit} className="space-y-6">
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <label className="flex flex-col text-sm font-medium text-slate-200">
