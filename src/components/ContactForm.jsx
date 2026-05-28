@@ -6,7 +6,7 @@ const EMAILJS_TEMPLATE_ID = 'template_lmnnu9u'
 const EMAILJS_PUBLIC_KEY = 'KuEOHJmOosbt4Nfqw'
 
 export default function ContactForm() {
-  const [submitted, setSubmitted] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     name: '',
@@ -43,7 +43,7 @@ export default function ContactForm() {
         EMAILJS_PUBLIC_KEY,
       )
 
-      setSubmitted(true)
+      setShowModal(true)
       setError('')
       setFormData({ name: '', email: '', message: '' })
       form.reset()
@@ -67,20 +67,7 @@ export default function ContactForm() {
         </div>
 
         <div className="rounded-3xl border border-slate-800 bg-slate-900/95 p-8 shadow-[0_24px_80px_rgba(15,23,42,0.55)]">
-          {submitted ? (
-            <div
-              className="rounded-3xl border border-emerald-500 bg-emerald-500/10 p-8 text-center"
-              aria-live="polite"
-            >
-              <h3 className="text-2xl font-semibold text-white">
-                Message sent!
-              </h3>
-              <p className="mt-3 text-slate-300">
-                Thanks for reaching out — I&apos;ll get back to you shortly.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <label className="flex flex-col text-sm font-medium text-slate-200">
@@ -134,6 +121,36 @@ export default function ContactForm() {
                 Send Message
               </button>
             </form>
+          {showModal && (
+            <div
+              className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="contact-success-title"
+              onClick={() => setShowModal(false)}
+            >
+              <div
+                className="w-full max-w-md rounded-3xl border border-slate-700 bg-slate-950 p-8 text-center shadow-2xl"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <h2
+                  id="contact-success-title"
+                  className="text-3xl font-bold text-white"
+                >
+                  Success!
+                </h2>
+                <p className="mt-4 text-slate-300">
+                  Your message has been sent. Thanks for reaching out!
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="mt-8 inline-flex rounded-3xl bg-sky-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/50"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </div>
