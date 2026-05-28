@@ -25,7 +25,7 @@ export default function UnderConstruction() {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen flex flex-col items-center justify-start pt-16 bg-slate-950 px-4 text-blue-400"
+      className="flex flex-col items-center justify-start pt-10 sm:pt-16 bg-slate-950 px-4 text-blue-400"
     >
       <div className="max-w-full w-full text-center">
         <p className="text-sm uppercase tracking-[0.35em] text-blue-300 mb-4">
@@ -48,7 +48,7 @@ export default function UnderConstruction() {
           </span>
         </h1>
         <p className="mt-6 text-base md:text-xl text-slate-300 max-w-2xl mx-auto">
-          This portfolio is currently being built. Check back soon.
+          This portfolio is currently being built.
         </p>
       </div>
     </section>
