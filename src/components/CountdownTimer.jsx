@@ -100,7 +100,7 @@ export default function CountdownTimer({ targetDate = DEFAULT_TARGET }) {
             </div>
           </div>
 
-          <div className="text-sm text-gray-400 mt-2 text-center">Until initial release</div>
+          <div className="text-sm uppercase tracking-[0.35em] text-blue-300 mb-4">Until initial release</div>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-4">
