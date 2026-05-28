@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,10 +9,10 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', to: '/' },
+    { name: 'About', to: '/about' },
+    { name: 'Projects', to: '/projects' },
+    { name: 'Contact', to: '/#contact' },
   ];
 
   return (
@@ -35,13 +36,13 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.to}
                 className="hover:text-blue-400 transition duration-200"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -91,14 +92,14 @@ export default function Navbar() {
         {isOpen && (
           <div className="md:hidden pb-4">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.to}
                 className="block py-2 px-4 hover:bg-gray-800 rounded transition duration-200"
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </div>
         )}
