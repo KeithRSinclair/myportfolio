@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import UnderConstruction from './components/UnderConstruction'
 import Footer from './components/Footer'
 import CountdownTimer from './components/CountdownTimer'
+import ContactForm from './components/ContactForm'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <CountdownTimer />
           </div>
         </div>
+        <ContactForm />
       </main>
       <Footer />
     </div>
