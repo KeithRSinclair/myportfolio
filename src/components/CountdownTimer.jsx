@@ -60,7 +60,7 @@ export default function CountdownTimer({ targetDate = DEFAULT_TARGET }) {
                 style={{ boxShadow: `0 0 12px ${neon}44` }}
               >
                 <span
-                  className="font-mono text-xl sm:text-3xl md:text-5xl text-[#39FF14]"
+                  className="font-['DS-Digital'] tracking-wider text-xl sm:text-3xl md:text-5xl text-[#39FF14]"
                   style={{ textShadow: `0 0 7px ${neon}, 0 0 20px ${neon}90` }}
                 >
                   {pad(time.days, 2)}
@@ -73,7 +73,7 @@ export default function CountdownTimer({ targetDate = DEFAULT_TARGET }) {
             <div className="flex flex-col items-center">
               <div className="w-16 sm:w-28 md:w-40 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
                 style={{ boxShadow: `0 0 12px ${neon}44` }}>
-                <span className="font-mono text-xl sm:text-3xl md:text-5xl text-[#39FF14]"
+                <span className="font-['DS-Digital'] tracking-wider text-xl sm:text-3xl md:text-5xl text-[#39FF14]"
                   style={{ textShadow: `0 0 7px ${neon}, 0 0 20px ${neon}90` }}>
                   {pad(time.hours)}
                 </span>
@@ -85,7 +85,7 @@ export default function CountdownTimer({ targetDate = DEFAULT_TARGET }) {
             <div className="flex flex-col items-center">
               <div className="w-16 sm:w-28 md:w-40 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
                 style={{ boxShadow: `0 0 12px ${neon}44` }}>
-                <span className="font-mono text-xl sm:text-3xl md:text-5xl text-[#39FF14]"
+                <span className="font-['DS-Digital'] tracking-wider text-xl sm:text-3xl md:text-5xl text-[#39FF14]"
                   style={{ textShadow: `0 0 7px ${neon}, 0 0 20px ${neon}90` }}>
                   {pad(time.minutes)}
                 </span>
@@ -97,7 +97,7 @@ export default function CountdownTimer({ targetDate = DEFAULT_TARGET }) {
             <div className="flex flex-col items-center">
               <div className="w-16 sm:w-28 md:w-40 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
                 style={{ boxShadow: `0 0 12px ${neon}44` }}>
-                <span className="font-mono text-xl sm:text-3xl md:text-5xl text-[#39FF14]"
+                <span className="font-['DS-Digital'] tracking-wider text-xl sm:text-3xl md:text-5xl text-[#39FF14]"
                   style={{ textShadow: `0 0 7px ${neon}, 0 0 20px ${neon}90` }}>
                   {pad(time.seconds)}
                 </span>
