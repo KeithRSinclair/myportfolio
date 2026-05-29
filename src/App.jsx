@@ -7,6 +7,7 @@ import CountdownTimer from './components/CountdownTimer'
 import ContactForm from './components/ContactForm'
 import About from './components/About'
 import Projects from './components/Projects'
+import Contact from './components/Contact'
 
 function Home() {
   return (
@@ -14,8 +15,7 @@ function Home() {
       <UnderConstruction />
       <div className="mt-6 sm:mt-8 w-full max-w-6xl">
         <CountdownTimer />
-      </div>
-      <ContactForm />
+      </div>      
     </div>
   )
 }
@@ -30,6 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
         <Footer />

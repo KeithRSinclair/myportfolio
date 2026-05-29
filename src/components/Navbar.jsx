@@ -12,7 +12,7 @@ export default function Navbar() {
     { name: 'Home', to: '/' },
     { name: 'About', to: '/about' },
     { name: 'Projects', to: '/projects' },
-    { name: 'Contact', to: '/#contact' },
+    { name: 'Contact', to: '/contact' },
   ];
 
   return (
@@ -22,7 +22,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="shrink-0">
             <a
-              href="#home"
+              href="/"
               className="group flex flex-col items-center font-bold text-2xl text-white hover:text-blue-400 transition"
             >
               <img
