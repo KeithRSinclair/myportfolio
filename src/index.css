@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scrollbar-gutter: stable;
+}
+
 @font-face {
   font-family: 'DS-Digital';
   src: url('./assets/fonts/DS-DIGIT.woff2') format('woff2'),
