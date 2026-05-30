@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react'; // 👈 Added useRef
 import { useLocation } from 'react-router-dom';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
@@ -8,19 +8,28 @@ NProgress.configure({ showSpinner: false });
 
 export const ProgressBar = () => {
   const location = useLocation();
+  // Keep track of the last path string across renders
+  const prevPathRef = useRef('');
 
   useEffect(() => {
-    // Start the bar when the route changes
-    NProgress.start();
+    // Generate a unique string representing the current page route
+    const currentPath = location.pathname + location.search;
 
-    // Finish the bar when the component re-renders (navigation complete)
-    const timer = setTimeout(() => NProgress.done(), 300);
+    // Only fire NProgress if the user actually navigated to a DIFFERENT page
+    if (currentPath !== prevPathRef.current) {
+      NProgress.start();
 
-    return () => {
-      clearTimeout(timer);
-      NProgress.done();
-    };
+      const timer = setTimeout(() => NProgress.done(), 300);
+
+      // Update the reference to the current page path
+      prevPathRef.current = currentPath;
+
+      return () => {
+        clearTimeout(timer);
+        NProgress.done();
+      };
+    }
   }, [location]);
 
-  return null; // This component doesn't render visual elements directly
+  return null;
 };

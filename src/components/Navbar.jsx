@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom"; // 👈 Swapped Link for NavLink for navigation items
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,12 +19,13 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 w-full bg-gray-900 text-white py-4">
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
+          
+          {/* Logo Container */}
           <div className="shrink-0">
             <Link
               to="/"
               className="group flex flex-col items-center font-bold text-2xl text-white hover:text-blue-400 transition"
-              onClick={() => setIsOpen(false)} // Ensures the mobile drawer closes when returning home
+              onClick={() => setIsOpen(false)}
             >
               <img
                 src="/favicon.svg"
@@ -37,13 +38,18 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
             {navLinks.map((link) => (
-              <Link
+              <NavLink
                 key={link.name}
                 to={link.to}
-                className="hover:text-blue-400 transition duration-200"
+                end // 👈 Crucial: stops "/" from matching sub-routes like "/about"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-gray-500 cursor-default pointer-events-none font-medium" // Greyed out style
+                    : "text-white hover:text-blue-400 transition duration-200 font-medium" // Default style
+                }
               >
                 {link.name}
-              </Link>
+              </NavLink>
             ))}
           </div>
 
@@ -93,14 +99,19 @@ export default function Navbar() {
         {isOpen && (
           <div className="md:hidden pb-4">
             {navLinks.map((link) => (
-              <Link
+              <NavLink
                 key={link.name}
                 to={link.to}
-                className="block py-2 px-4 hover:bg-gray-800 rounded transition duration-200 mt-3 text-center"
+                end
+                className={({ isActive }) =>
+                  isActive
+                    ? "block py-2 px-4 bg-gray-950 text-gray-500 rounded mt-3 text-center cursor-default pointer-events-none" // Active mobile style
+                    : "block py-2 px-4 text-white hover:bg-gray-800 rounded transition duration-200 mt-3 text-center" // Default mobile style
+                }
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
-              </Link>
+              </NavLink>
             ))}
           </div>
         )}
