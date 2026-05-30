@@ -16,8 +16,8 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-gray-900 text-white py-4">
-      <div className="max-w-7xl mx-auto px-4">
+    <nav className="sticky top-0 z-50 w-full bg-gray-900 text-white py-4">
+      <div className="max-w-5xl mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="shrink-0">
@@ -95,7 +95,7 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 to={link.to}
-                className="block py-2 px-4 hover:bg-gray-800 rounded transition duration-200"
+                className="block py-2 px-4 hover:bg-gray-800 rounded transition duration-200 mt-3 text-center"
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}

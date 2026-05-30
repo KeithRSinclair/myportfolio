@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const DEFAULT_TARGET = "2026-06-11T00:00:00"; // Portfolio Launch target: June 11, 2026 00:00:00
+const DEFAULT_TARGET = "2026-06-10T00:00:00"; // Portfolio Launch target: June 10, 2026 00:00:00
 
 function getTimeRemaining(target) {
   const total = Math.max(0, target - new Date());
@@ -100,7 +100,7 @@ export default function CountdownTimer({ targetDate = DEFAULT_TARGET }) {
             </div>
           </div>
 
-          <div className="text-sm uppercase tracking-[0.35em] text-blue-300 mb-4">Until initial release</div>
+          <div className="text-sm uppercase tracking-[0.35em] text-blue-300 mb- text-center">Until initial release<br /> 10 June 2026</div>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-4">

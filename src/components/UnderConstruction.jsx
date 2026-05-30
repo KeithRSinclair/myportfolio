@@ -31,7 +31,7 @@ export default function UnderConstruction() {
         <p className="text-sm uppercase tracking-[0.35em] text-blue-300 mb-4">
           Website is currently
         </p>
-        <h1 className="w-full text-4xl sm:text-4xl md:text-7xl font-extrabold tracking-[0.12em] sm:tracking-[0.18em] md:tracking-[0.3em] leading-none whitespace-normal sm:whitespace-nowrap">
+        <h1 className="w-full text-5xl md:text-7xl font-extrabold tracking-wide md:tracking-wider leading-none text-center font-['DS-Digital'] ">
           <span className="inline-flex">
             {'UNDER'.split('').map((char, index) => (
               <span key={`u-${index}`} className="inline-block construction-letter">

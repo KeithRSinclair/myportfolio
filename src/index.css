@@ -4,6 +4,15 @@ html {
   scrollbar-gutter: stable;
 }
 
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 @font-face {
   font-family: 'DS-Digital';
   src: url('./assets/fonts/DS-DIGIT.woff2') format('woff2'),
@@ -25,4 +34,16 @@ html {
 
 .pulse-heart {
   animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Change the color of the bar */
+#nprogress .bar {
+  background: #3b82f6 !important;
+  top: 6.7rem !important;
+  height: 3px !important;
+}
+
+/* Optional: Change the spinner color */
+#nprogress .spinner-icon {
+    border-top-color: #3b82f6 !important;
 }
