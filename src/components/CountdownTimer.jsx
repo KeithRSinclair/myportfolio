@@ -16,7 +16,9 @@ export default function CountdownTimer({ targetDate = DEFAULT_TARGET }) {
   const target = React.useMemo(() => {
     const d = targetDate instanceof Date ? targetDate : new Date(targetDate);
     if (isNaN(d)) {
-      console.warn("CountdownTimer: invalid targetDate, falling back to default.");
+      console.warn(
+        "CountdownTimer: invalid targetDate, falling back to default.",
+      );
       return new Date(DEFAULT_TARGET);
     }
     return d;
@@ -50,11 +52,13 @@ export default function CountdownTimer({ targetDate = DEFAULT_TARGET }) {
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      {!finished ? (
-        <div className="flex flex-col items-center gap-6 px-4 sm:px-0">
-          <div className="flex items-stretch justify-center gap-3 sm:gap-8 flex-nowrap overflow-x-auto">
+      {!finished ? (       
+        <div className="w-full max-w-full flex flex-col items-center gap-6 px-4 sm:px-0">          
+          <div className="w-full flex items-stretch justify-center gap-3 sm:gap-8 flex-nowrap overflow-x-auto py-2">
             {/* Days */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center shrink-0">
+              {" "}
+              {/* Added shrink-0 to prevent compression */}
               <div
                 className="w-20 sm:w-32 md:w-44 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
                 style={{ boxShadow: `0 0 12px ${neon}44` }}
@@ -63,54 +67,76 @@ export default function CountdownTimer({ targetDate = DEFAULT_TARGET }) {
                   {pad(time.days, 2)}
                 </span>
               </div>
-              <div className="text-xs sm:text-base text-gray-300 mt-2 sm:mt-3 text-center">Days</div>
+              <div className="text-xs sm:text-base text-gray-300 mt-2 sm:mt-3 text-center">
+                Days
+              </div>
             </div>
 
             {/* Hours */}
-            <div className="flex flex-col items-center">
-              <div className="w-16 sm:w-28 md:w-40 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
-                style={{ boxShadow: `0 0 12px ${neon}44` }}>
+            <div className="flex flex-col items-center shrink-0">
+              <div
+                className="w-16 sm:w-28 md:w-40 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
+                style={{ boxShadow: `0 0 12px ${neon}44` }}
+              >
                 <span className="font-['DS-Digital'] tracking-wider text-xl sm:text-3xl md:text-5xl text-[#39FF14]">
                   {pad(time.hours)}
                 </span>
               </div>
-              <div className="text-xs sm:text-base text-gray-300 mt-2 sm:mt-3">Hours</div>
+              <div className="text-xs sm:text-base text-gray-300 mt-2 sm:mt-3">
+                Hours
+              </div>
             </div>
 
             {/* Minutes */}
-            <div className="flex flex-col items-center">
-              <div className="w-16 sm:w-28 md:w-40 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
-                style={{ boxShadow: `0 0 12px ${neon}44` }}>
+            <div className="flex flex-col items-center shrink-0">
+              <div
+                className="w-16 sm:w-28 md:w-40 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
+                style={{ boxShadow: `0 0 12px ${neon}44` }}
+              >
                 <span className="font-['DS-Digital'] tracking-wider text-xl sm:text-3xl md:text-5xl text-[#39FF14]">
                   {pad(time.minutes)}
                 </span>
               </div>
-              <div className="text-xs sm:text-base text-gray-300 mt-2 sm:mt-3">Minutes</div>
+              <div className="text-xs sm:text-base text-gray-300 mt-2 sm:mt-3">
+                Minutes
+              </div>
             </div>
 
             {/* Seconds */}
-            <div className="flex flex-col items-center">
-              <div className="w-16 sm:w-28 md:w-40 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
-                style={{ boxShadow: `0 0 12px ${neon}44` }}>
+            <div className="flex flex-col items-center shrink-0">
+              <div
+                className="w-16 sm:w-28 md:w-40 h-16 sm:h-20 md:h-28 flex items-center justify-center bg-black/90 border border-gray-800 rounded-xl shadow-2xl"
+                style={{ boxShadow: `0 0 12px ${neon}44` }}
+              >
                 <span className="font-['DS-Digital'] tracking-wider text-xl sm:text-3xl md:text-5xl text-[#39FF14]">
                   {pad(time.seconds)}
                 </span>
               </div>
-              <div className="text-xs sm:text-base text-gray-300 mt-2 sm:mt-3">Seconds</div>
+              <div className="text-xs sm:text-base text-gray-300 mt-2 sm:mt-3">
+                Seconds
+              </div>
             </div>
           </div>
-
-          <div className="text-sm uppercase tracking-[0.35em] text-blue-300 mb- text-center">Until initial release<br /> 10 June 2026</div>
+          {/* Cleaned up a rogue "mb-" class string typo here too */}
+          <div className="text-sm uppercase tracking-[0.35em] text-blue-300 text-center">
+            Until initial release
+            <br /> 10 June 2026
+          </div>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-4">
           <div
             className="font-mono text-3xl sm:text-4xl md:text-5xl text-[#39FF14] bg-black/90 px-8 py-5 rounded-xl border border-gray-800"
-            style={{ textShadow: `0 0 8px ${neon}, 0 0 26px ${neon}90`, boxShadow: `0 0 16px ${neon}44` }}
+            style={{
+              textShadow: `0 0 8px ${neon}, 0 0 26px ${neon}90`,
+              boxShadow: `0 0 16px ${neon}44`,
+            }}
           >
             Portfolio Live!
           </div>
-          <div className="text-sm sm:text-base text-gray-400">The portfolio is now live.</div>
+          <div className="text-sm sm:text-base text-gray-400">
+            The portfolio is now live.
+          </div>
         </div>
       )}
     </div>

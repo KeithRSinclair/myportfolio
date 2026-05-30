@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,10 +9,10 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { name: 'Home', to: '/' },
-    { name: 'About', to: '/about' },
-    { name: 'Projects', to: '/projects' },
-    { name: 'Contact', to: '/contact' },
+    { name: "Home", to: "/" },
+    { name: "About", to: "/about" },
+    { name: "Projects", to: "/projects" },
+    { name: "Contact", to: "/contact" },
   ];
 
   return (
@@ -21,16 +21,17 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="shrink-0">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="group flex flex-col items-center font-bold text-2xl text-white hover:text-blue-400 transition"
+              onClick={() => setIsOpen(false)} // Ensures the mobile drawer closes when returning home
             >
               <img
                 src="/favicon.svg"
                 alt="Logo icon"
                 className="h-24 w-24 p-2 rounded-full transition shadow-none group-hover:shadow-[0_0_30px_rgba(96,165,250,0.45),inset_0_0_16px_rgba(96,165,250,0.35)]"
               />
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
