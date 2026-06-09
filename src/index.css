@@ -48,3 +48,12 @@ body,
 #nprogress .spinner-icon {
     border-top-color: #3b82f6 !important;
 }
+
+@keyframes floaty {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}

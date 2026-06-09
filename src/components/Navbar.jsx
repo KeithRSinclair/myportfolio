@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom"; // 👈 Swapped Link for NavLink for navigation items
+import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,18 +9,37 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { name: "Home", to: "/" },
-    { name: "About", to: "/about" },
-    { name: "Projects", to: "/projects" },
-    { name: "Contact", to: "/contact" },
+    {
+      name: "Home",
+      to: "/",
+      icon: "/home3d.png",
+      activeIcon: "/home.png",
+    },
+    {
+      name: "About",
+      to: "/about",
+      icon: null,
+      activeIcon: null,
+    },
+    {
+      name: "Projects",
+      to: "/projects",
+      icon: "/projects3d.png",
+      activeIcon: "/projects.png",
+    },
+    {
+      name: "Contact",
+      to: "/contact",
+      icon: "/contact3d.png",
+      activeIcon: "/contact.png",
+    },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-gray-900 text-white py-4">
-      <div className="max-w-5xl mx-auto px-4">
+    <nav className="sticky top-0 z-50 w-full bg-gray-800 text-white py-4">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-20">
-          
-          {/* Logo Container */}
+          {/* Logo */}
           <div className="shrink-0">
             <Link
               to="/"
@@ -38,17 +57,24 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
             {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.to}
-                end // 👈 Crucial: stops "/" from matching sub-routes like "/about"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-gray-500 cursor-default pointer-events-none font-medium" // Greyed out style
-                    : "text-white hover:text-blue-400 transition duration-200 font-medium" // Default style
-                }
-              >
-                {link.name}
+              <NavLink key={link.name} to={link.to} end>
+                {({ isActive }) => (
+                  <div
+                    className={`flex flex-col items-center font-medium transition duration-200 ${
+                      isActive ? "text-black" : "text-white hover:text-blue-400"
+                    }`}
+                  >
+                    {link.icon && (
+                      <img
+                        src={isActive ? link.activeIcon : link.icon}
+                        alt={`${link.name} icon`}
+                        className="w-8 h-8 mb-1 object-contain transition-transform duration-300 hover:scale-110"
+                      />
+                    )}
+
+                    <span>{link.name}</span>
+                  </div>
+                )}
               </NavLink>
             ))}
           </div>
@@ -61,7 +87,6 @@ export default function Navbar() {
               aria-label="Toggle menu"
             >
               {isOpen ? (
-                // Close Icon
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -76,7 +101,6 @@ export default function Navbar() {
                   />
                 </svg>
               ) : (
-                // Hamburger Icon
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -103,14 +127,27 @@ export default function Navbar() {
                 key={link.name}
                 to={link.to}
                 end
-                className={({ isActive }) =>
-                  isActive
-                    ? "block py-2 px-4 bg-gray-950 text-gray-500 rounded mt-3 text-center cursor-default pointer-events-none" // Active mobile style
-                    : "block py-2 px-4 text-white hover:bg-gray-800 rounded transition duration-200 mt-3 text-center" // Default mobile style
-                }
                 onClick={() => setIsOpen(false)}
               >
-                {link.name}
+                {({ isActive }) => (
+                  <div
+                    className={`py-3 px-4 rounded mt-3 text-center flex flex-col items-center transition duration-200 ${
+                      isActive
+                        ? "bg-gray-700 text-black"
+                        : "text-white hover:bg-gray-800"
+                    }`}
+                  >
+                    {link.icon && (
+                      <img
+                        src={isActive ? link.activeIcon : link.icon}
+                        alt={`${link.name} icon`}
+                        className="w-8 h-8 mb-1 object-contain transition-transform duration-300 hover:scale-110"
+                      />
+                    )}
+
+                    <span>{link.name}</span>
+                  </div>
+                )}
               </NavLink>
             ))}
           </div>
