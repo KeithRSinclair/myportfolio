@@ -65,25 +65,40 @@ export default function About() {
 
       <div className="max-w-6xl mx-auto px-4 relative z-10">
         <div className="mb-16 text-center lg:mb-0 -translate-y-16">
-          <h1 className="mb-4 font-extrabold leading-none tracking-tight text-[clamp(3rem,6vw,5.5rem)]">
-            <span className="block text-slate-400">
-              {renderLetters(firstName, "first")}
-            </span>
-            <span className="mt-[.2em] block text-slate-600">
-              {renderLetters(lastName, "last")}
-            </span>
-          </h1>
+          <div className="flex flex-col items-center md:items-center">
+            <h1 className="font-extrabold leading-none tracking-tight">
+              {/* Mobile */}
+              <div className="md:hidden text-5xl text-left">
+                <span className="text-slate-400">
+                  {renderLetters(firstName, "first")}
+                </span>{" "}
+                <span className="text-slate-600">
+                  {renderLetters(lastName, "last")}
+                </span>
+              </div>
 
-          <span
-            className="job-title inline-block text-2xl sm:text-4xl font-black uppercase tracking-[0.2em] opacity-0"
-            style={{
-              background: "linear-gradient(90deg, #38bdf8, #a855f7, #f472b6)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            {tagline}
-          </span>
+              {/* Desktop */}
+              <div className="hidden md:block text-[clamp(3rem,6vw,5.5rem)]">
+                <span className="block text-slate-400">
+                  {renderLetters(firstName, "first")}
+                </span>
+                <span className="block mt-[.2em] text-slate-600">
+                  {renderLetters(lastName, "last")}
+                </span>
+              </div>
+            </h1>
+
+            <span
+              className="job-title mt-2 text-lg sm:text-xl md:text-2xl font-black uppercase tracking-[0.2em] opacity-0"
+              style={{
+                background: "linear-gradient(90deg,#38bdf8,#a855f7,#f472b6)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {tagline}
+            </span>
+          </div>
         </div>
 
         <div className="grid gap-12 lg:grid-cols-12 items-start">
