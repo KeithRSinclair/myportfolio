@@ -35,6 +35,8 @@ export default function Navbar() {
     },
   ];
 
+  const shadow3D = "drop-shadow-[-2px_-1px_0px_#000]";
+
   return (
     <nav className="sticky top-0 z-50 w-full bg-gray-800 text-white py-4">
       <div className="max-w-7xl mx-auto px-4">
@@ -61,7 +63,7 @@ export default function Navbar() {
                 {({ isActive }) => (
                   <div
                     className={`flex flex-col items-center font-medium transition duration-200 ${
-                      isActive ? "text-black" : "text-white hover:text-blue-400"
+                      isActive ? "text-black" :`text-blue-500 ${shadow3D}`
                     }`}
                   >
                     {link.icon && (
@@ -134,7 +136,7 @@ export default function Navbar() {
                     className={`py-3 px-4 rounded mt-3 text-center flex flex-col items-center transition duration-200 ${
                       isActive
                         ? "bg-gray-700 text-black"
-                        : "text-white hover:bg-gray-800"
+                        :`text-blue-500 ${shadow3D}`
                     }`}
                   >
                     {link.icon && (

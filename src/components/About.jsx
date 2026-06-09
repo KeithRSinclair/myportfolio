@@ -64,7 +64,7 @@ export default function About() {
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 relative z-10">
-        <div className="mb-16 text-center lg:mb-0 -translate-y-16">
+        <div className="mb-16 text-center lg:mb-0 -translate-y-10">
           <div className="flex flex-col items-center md:items-center">
             <h1 className="font-extrabold leading-none tracking-tight">
               {/* Mobile */}
