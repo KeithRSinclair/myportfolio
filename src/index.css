@@ -13,17 +13,6 @@ body,
   width: 100% !important; 
 }
 
-
-@font-face {
-  font-family: 'DS-Digital';
-  src: url('./assets/fonts/DS-DIGIT.woff2') format('woff2'),
-       url('./assets/fonts/DS-DIGIT.woff') format('woff'),
-       url('./assets/fonts/DS-DIGIT.TTF') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @keyframes pulse {
   0%, 100% {
     opacity: 1;

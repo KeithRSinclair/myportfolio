@@ -14,13 +14,7 @@ export default function Navbar() {
       to: "/",
       icon: "/home3d.png",
       activeIcon: "/home.png",
-    },
-    {
-      name: "About",
-      to: "/about",
-      icon: null,
-      activeIcon: null,
-    },
+    },    
     {
       name: "Projects",
       to: "/projects",
