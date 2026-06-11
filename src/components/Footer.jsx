@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="bg-gray-900 text-slate-300 py-8 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 text-center">
         <p className="text-sm md:text-base">
-          This website is currently being built with <span className="pulse-heart inline-block">❤️</span> and care by
+          This website is built with <span className="pulse-heart inline-block">❤️</span> and care by
         </p>
         <div className="mt-2 flex justify-center">
           <img src="/logo.png" alt="Logo" className="h-7 md:h-12" />

@@ -6,11 +6,13 @@ import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Home from "./components/Home";
 import { ProgressBar } from "./components/ProgressBar";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen flex flex-col">
+        <ScrollToTop />
         <Navbar />
         <ProgressBar />
         <main className="flex-1 flex flex-col justify-start overflow-x-hidden">
