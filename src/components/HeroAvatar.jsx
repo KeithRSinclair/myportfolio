@@ -8,12 +8,12 @@ const HeroAvatar = () => {
   return (
     <>
     
-      <Canvas camera={{ position: [0, 1, 10.5], fov: 70}}>
+      <Canvas camera={{ position: [0, 7, 12.5], fov: 48.5 }}>
         <ambientLight intensity={1} />
         <group
           scale={isMobile ? 4 : 5}
           position={[0, -3.5, 0]}
-          rotation={[0, -Math.PI / 4, 0]}
+          rotation={[0, -Math.PI / 4.2, 0]}
         >
           <Avatar />
         </group>

@@ -48,5 +48,5 @@ body,
 }
 
  .hero-3d-layout {
-    @apply xl:w-[70%] w-full h-full min-h-[50vh] absolute xl:-top-20 top-24 xl:-left-60 right-0;
+    @apply xl:w-[70%] w-full h-full min-h-[50vh] absolute xl:-top-40 -top-40 xl:-left-40 right-0;
   }
