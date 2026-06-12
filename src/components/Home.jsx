@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import HeroAvatar from "./HeroAvatar";
 
 export default function Home() {
   const sectionRef = useRef(null);
@@ -103,53 +104,11 @@ export default function Home() {
 
         <div className="grid gap-12 lg:grid-cols-12 items-start">
           {/* Narrative Strategy Left Side */}
-          <article className="lg:col-span-7 space-y-8 text-slate-300">
-            <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-                <span className="w-1.5 h-6 bg-sky-500 rounded-full"></span>
-                The Vision
-              </h3>
-              <p className="leading-relaxed text-slate-300 text-[1.05rem]">
-                I specialize in solving complex visual and performance problems
-                for the real-time web. Instead of treating 3D as a decorative
-                layer, I treat it as an interactive interface—engineering
-                solutions that optimize asset size, minimize draw calls, and
-                implement custom shaders without sacrificing browser
-                performance.
-              </p>
-              <p className="leading-relaxed text-slate-300 text-[1.05rem]">
-                My development process bridges the gap between artistic vision
-                and production-grade code. By understanding the limits of GPU
-                execution, memory consumption, and layout systems, I deliver
-                highly polished experiences that run smoothly across both
-                flagship desktop rigs and low-end mobile devices.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-                <span className="w-1.5 h-6 bg-purple-500 rounded-full"></span>
-                Integrated Pipeline
-              </h3>
-              <p className="leading-relaxed text-slate-300 text-[1.05rem]">
-                A premium 3D web experience requires a unified technical
-                workflow. I use{" "}
-                <strong className="text-white font-semibold">Blender</strong>{" "}
-                for optimized asset generation and pipeline workflows, which I
-                render in{" "}
-                <strong className="text-white font-semibold">React</strong>{" "}
-                using{" "}
-                <strong className="text-white font-semibold">
-                  Three.js / React Three Fiber
-                </strong>{" "}
-                for seamless interface control and web performance, while
-                leveraging design patterns inspired by{" "}
-                <strong className="text-white font-semibold">Unity</strong> to
-                implement sophisticated interactive logic and physics.
-              </p>
-            </div>
-          </article>
-
+          <div className="hero-3d-layout">
+              <HeroAvatar />
+          </div>
+          
+          
           {/* Grid / Modular Technology Stack Right Side */}
           <div className="lg:col-span-5 space-y-6">
             <h3 className="text-xl font-bold text-slate-200 uppercase tracking-wider text-center lg:text-left">

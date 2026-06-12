@@ -46,3 +46,7 @@ body,
     transform: translateY(-3px);
   }
 }
+
+ .hero-3d-layout {
+    @apply xl:w-[70%] w-full h-full min-h-[50vh] absolute xl:-top-20 top-24 xl:-left-60 right-0;
+  }
