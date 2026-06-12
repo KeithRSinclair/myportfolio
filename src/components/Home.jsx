@@ -103,10 +103,10 @@ export default function Home() {
         </div>
 
         {/* Outer Grid Layout Layout Wrapper */}
-        <div className="grid gap-12 lg:grid-cols-12 items-center mt-8">
+        <div className="grid gap-6 lg:grid-cols-12 items-center mt-8 max-h-screen landscape:grid-cols-2 landscape:gap-4 lg:landscape:grid-cols-12">
           
           {/* Avatar Area: Full screen row on mobile, Left 7-columns wide space on Desktop */}
-          <div className="w-full h-[50vh] lg:h-[60vh] lg:col-span-7 relative flex justify-center items-center">
+          <div className="w-full h-[45vh] sm:h-[50vh] lg:h-[60vh] landscape:h-[70vh] lg:landscape:h-[60vh] lg:col-span-7 relative flex justify-center items-center">
             <div className="w-full h-full hero-3d-layout">
               <HeroAvatar />
             </div>
