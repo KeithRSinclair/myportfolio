@@ -196,8 +196,20 @@ export function Avatar(props) {
           geometry={nodes.avaturn_shoes_0.geometry}
           material={materials["avaturn_shoes_0_material.001"]}
           skeleton={nodes.avaturn_shoes_0.skeleton}
+        />        
+      </group>      
+      <mesh position={[0, -0.06, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[0.7, 0.7, 0.14, 64]} />
+        <meshStandardMaterial
+          color="#38bdf8"
+          metalness={0.6}
+          roughness={0.5}
+          emissive="#fff"
+          emissiveIntensity={0.15}
         />
-      </group>
+      </mesh>
+
+      
     </group>
   );
 }
