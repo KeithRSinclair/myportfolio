@@ -1,83 +1,205 @@
-import React, { useEffect, useRef } from 'react'
-import { useGraph, useFrame } from '@react-three/fiber'
-import { useGLTF, useAnimations } from '@react-three/drei'
-import { SkeletonUtils } from 'three-stdlib'
-import * as THREE from 'three'
+import React, { useEffect, useRef, useMemo } from "react";
+import { useGraph, useFrame } from "@react-three/fiber";
+import { useGLTF, useAnimations } from "@react-three/drei";
+import { SkeletonUtils } from "three-stdlib";
+import * as THREE from "three";
 
 export function Avatar(props) {
-  const group = useRef()
-  const { scene, animations } = useGLTF('/avatar.glb')
-  
-  // Cleanly clone for SkinnedMesh re-use safety
-  const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
-  const { nodes, materials } = useGraph(clone)
-  
-  // Use Drei's built-in hooks for tracking the animations bound to this group
-  const { actions } = useAnimations(animations, group)
-  
-  // Keep-alive timers for tracking the idle loop
-  const idleTimer = useRef(0)
-  const idleThreshold = useRef(5 + Math.random() * 5) // Random interval between 5-10 seconds
+  const group = useRef();
+
+  const { scene, animations } = useGLTF("/avatar.glb");
+
+  const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  const { nodes, materials } = useGraph(clone);
+
+  const { actions, names, mixer } = useAnimations(animations, group);
+
+  const currentAction = useRef(null);
+  const idleLoops = useRef(0);
+  const stage = useRef("intro");
 
   useEffect(() => {
-    // 1. Automatically apply shadow maps across your individual meshes
     clone.traverse((child) => {
       if (child.isMesh) {
-        child.castShadow = true
-        child.receiveShadow = true
+        child.castShadow = true;
+        child.receiveShadow = true;
       }
-    })
+    });
+  }, [clone]);
 
-    // 2. Play the initial wave when your portfolio loads
-    const waveAction = actions['waving'] || Object.values(actions)[0]
-    if (waveAction) {
-      waveAction.clampWhenFinished = true
-      waveAction.loop = THREE.LoopOnce
-      waveAction.play()
-    }
-  }, [actions, clone])
+  useEffect(() => {
+    if (!actions) return;
 
-  /* ---------------- ANIMATION FRAME LOOP ---------------- */
-  useFrame((state, delta) => {
-    // Smooth entry rotation: Starts slightly away and faces forward over time
-    if (group.current && group.current.rotation.y < 0) {
-      group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, 0, 1.1)
-    }
+    const fadeTime = 0.5;
 
-    // Keep-alive loop checks
-    idleTimer.current += delta
-    if (idleTimer.current >= idleThreshold.current) {
-      const waveAction = actions['waving']
-      
-      if (waveAction && !waveAction.isRunning()) {
-        waveAction.reset()
-        waveAction.setLoop(THREE.LoopOnce)
-        waveAction.clampWhenFinished = true
-        waveAction.play()
+    const playAction = (name, loop = THREE.LoopOnce) => {
+      const action = actions[name];
 
-        // Reset timer and randomize next trigger frame delay
-        idleTimer.current = 0
-        idleThreshold.current = 5 + Math.random() * 5
+      if (!action) {
+        console.warn(`Animation "${name}" not found`);
+        return;
       }
-    }
-  })
+
+      action.reset();
+      action.enabled = true;
+      action.setLoop(loop);
+
+      if (loop === THREE.LoopOnce) {
+        action.clampWhenFinished = true;
+      }
+
+      action.play();
+
+      if (currentAction.current && currentAction.current !== action) {
+        action.crossFadeFrom(currentAction.current, fadeTime, true);
+      }
+
+      currentAction.current = action;
+    };
+
+    // ----------------------------
+    // START SEQUENCE
+    // ----------------------------
+
+    stage.current = "wave";
+
+    playAction("waving", THREE.LoopOnce);
+
+    const handleFinished = (e) => {
+      const finished = e.action;
+
+      // WAVE FINISHED
+      if (
+        stage.current === "wave" &&
+        finished === actions["waving"]
+      ) {
+        stage.current = "wait";
+
+        setTimeout(() => {
+          idleLoops.current = 0;
+          stage.current = "idle";
+
+          playAction("idle", THREE.LoopRepeat);
+
+          const idleDuration =
+            actions["idle"].getClip().duration;
+
+          const idleTimer = setInterval(() => {
+            idleLoops.current++;
+
+            if (idleLoops.current >= 2) {
+              clearInterval(idleTimer);
+
+              stage.current = "neckstretching";
+              playAction("neckstretching", THREE.LoopOnce);
+            }
+          }, idleDuration * 1000);
+        }, 3000);
+      }
+
+      // NECK STRETCH FINISHED
+      else if (
+        stage.current === "neckstretching" &&
+        finished === actions["neckstretching"]
+      ) {
+        stage.current = "armstretching";
+        playAction("armstretching", THREE.LoopOnce);
+      }
+
+      // ARM STRETCH FINISHED
+      else if (
+        stage.current === "armstretching" &&
+        finished === actions["armstretching"]
+      ) {
+        idleLoops.current = 0;
+        stage.current = "idle";
+
+        playAction("idle", THREE.LoopRepeat);
+
+        const idleDuration =
+          actions["idle"].getClip().duration;
+
+        const idleTimer = setInterval(() => {
+          idleLoops.current++;
+
+          if (idleLoops.current >= 2) {
+            clearInterval(idleTimer);
+
+            stage.current = "neckstretching";
+            playAction("neckstretching", THREE.LoopOnce);
+          }
+        }, idleDuration * 1000);
+      }
+    };
+
+    mixer.addEventListener("finished", handleFinished);
+
+    return () => {
+      mixer.removeEventListener("finished", handleFinished);
+    };
+  }, [actions, mixer, clone]);
+
+  useFrame(() => {
+    if (!group.current) return;
+
+    // Rotate avatar smoothly to front
+    group.current.rotation.y = THREE.MathUtils.lerp(
+      group.current.rotation.y,
+      0,
+      0.05
+    );
+  });
 
   return (
-    // Component drops into canvas initialized at -Math.PI to match your intro spin
-    <group ref={group} {...props} rotation={[0, -Math.PI, 0]} position={[0, 0, 0]} dispose={null}>
+    <group
+      ref={group}
+      {...props}
+      rotation={[0, -Math.PI, 0]}
+      dispose={null}
+    >
       <group name="Scene">
         <group name="avatar">
           <primitive object={nodes.Hips} />
         </group>
-        <skinnedMesh name="avaturn_body" geometry={nodes.avaturn_body.geometry} material={materials['avaturn_body_material.001']} skeleton={nodes.avaturn_body.skeleton} />
-        <skinnedMesh name="avaturn_glasses_0" geometry={nodes.avaturn_glasses_0.geometry} material={materials['avaturn_glasses_0_material.001']} skeleton={nodes.avaturn_glasses_0.skeleton} />
-        <skinnedMesh name="avaturn_glasses_1" geometry={nodes.avaturn_glasses_1.geometry} material={materials['avaturn_glasses_1_material.001']} skeleton={nodes.avaturn_glasses_1.skeleton} />
-        <skinnedMesh name="avaturn_hair_0" geometry={nodes.avaturn_hair_0.geometry} material={materials['avaturn_hair_0_material.001']} skeleton={nodes.avaturn_hair_0.skeleton} />
-        <skinnedMesh name="avaturn_look_0" geometry={nodes.avaturn_look_0.geometry} material={materials['avaturn_look_0_material.001']} skeleton={nodes.avaturn_look_0.skeleton} />
-        <skinnedMesh name="avaturn_shoes_0" geometry={nodes.avaturn_shoes_0.geometry} material={materials['avaturn_shoes_0_material.001']} skeleton={nodes.avaturn_shoes_0.skeleton} />
+
+        <skinnedMesh
+          geometry={nodes.avaturn_body.geometry}
+          material={materials["avaturn_body_material.001"]}
+          skeleton={nodes.avaturn_body.skeleton}
+        />
+
+        <skinnedMesh
+          geometry={nodes.avaturn_glasses_0.geometry}
+          material={materials["avaturn_glasses_0_material.001"]}
+          skeleton={nodes.avaturn_glasses_0.skeleton}
+        />
+
+        <skinnedMesh
+          geometry={nodes.avaturn_glasses_1.geometry}
+          material={materials["avaturn_glasses_1_material.001"]}
+          skeleton={nodes.avaturn_glasses_1.skeleton}
+        />
+
+        <skinnedMesh
+          geometry={nodes.avaturn_hair_0.geometry}
+          material={materials["avaturn_hair_0_material.001"]}
+          skeleton={nodes.avaturn_hair_0.skeleton}
+        />
+
+        <skinnedMesh
+          geometry={nodes.avaturn_look_0.geometry}
+          material={materials["avaturn_look_0_material.001"]}
+          skeleton={nodes.avaturn_look_0.skeleton}
+        />
+
+        <skinnedMesh
+          geometry={nodes.avaturn_shoes_0.geometry}
+          material={materials["avaturn_shoes_0_material.001"]}
+          skeleton={nodes.avaturn_shoes_0.skeleton}
+        />
       </group>
     </group>
-  )
+  );
 }
 
-useGLTF.preload('/avatar.glb')
+useGLTF.preload("/avatar.glb");
