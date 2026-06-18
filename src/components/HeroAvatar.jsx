@@ -12,7 +12,7 @@ const HeroAvatar = () => {
 
   return (
     <>
-      <Canvas camera={{ position: [0, 7, 13.5], fov: 58 }} shadows>
+      <Canvas camera={{ position: [0, 7, 13.5], fov: 58 }} >
         <ambientLight intensity={0.9} />
         <directionalLight position={[2, 3, 2]} intensity={2} castShadow />
         
