@@ -197,7 +197,8 @@ export function Avatar(props) {
           material={materials["avaturn_shoes_0_material.001"]}
           skeleton={nodes.avaturn_shoes_0.skeleton}
         />        
-      </group>      
+      </group>    
+       
       <mesh position={[0, -0.06, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[0.7, 0.7, 0.14, 64]} />
         <meshStandardMaterial

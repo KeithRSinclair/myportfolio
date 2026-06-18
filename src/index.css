@@ -48,5 +48,14 @@ body,
 }
 
  .hero-3d-layout {
-    @apply xl:w-[84%] w-full min-h-[55vh] absolute xl:-top-40 -top-45 xl:-left-30 right-0;
+    @apply xl:w-[84%] w-full min-h-[55vh] absolute xl:-top-40 -top-38 xl:-left-30 right-0;
   }
+
+  @media (min-width: 1024px) and (max-width: 1279px) {
+  .hero-button {    
+    transform: translateX(26%);
+    margin-top: 29rem;
+  }
+}
+
+
