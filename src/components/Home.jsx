@@ -116,7 +116,7 @@ export default function Home() {
               <div className="w-full flex justify-center items-center hero-button">
                 <button
                 onClick={() => navigate("/contact")}
-                className="absolute ml-2 lg:ml-6 md:ml-0 left-1/2 lg:left-1/4 md:left-1/2 -translate-x-1/2 bottom-0 md:bottom-8 lg:bottom-32 xl:bottom-24 z-50 px-8 py-3 rounded-xl font-semibold text-black shadow-[0_0_12px_rgba(255,255,255,0.8)]  lg:landscape:bottom-20"
+                className="absolute ml-2 lg:ml-6 md:ml-0 left-1/2 lg:left-1/4 md:left-1/2 -translate-x-1/2 bottom-0 md:bottom-8 lg:bottom-32 xl:bottom-24 z-50 px-8 py-3 rounded-xl font-semibold text-black shadow-[0_0_12px_rgba(255,255,255,0.8)]  lg:landscape:bottom-20 hover:scale-110"
                 style={{
                   background:
                     "linear-gradient(90deg, rgb(56, 189, 248), rgb(168, 85, 247), rgb(244, 114, 182))",

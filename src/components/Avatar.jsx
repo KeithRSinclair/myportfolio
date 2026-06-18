@@ -208,9 +208,7 @@ export function Avatar(props) {
           emissive="#fff"
           emissiveIntensity={0.15}
         />
-      </mesh>
-
-      
+      </mesh>     
     </group>
   );
 }

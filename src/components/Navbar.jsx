@@ -63,8 +63,7 @@ export default function Navbar() {
               <NavLink 
                 key={link.name} 
                 to={link.to} 
-                end
-                // FIX: Move pointer-events-none to the outer NavLink component
+                end                
                 className={({ isActive }) => isActive ? "pointer-events-none cursor-default" : ""}
               >
                 {({ isActive }) => (
