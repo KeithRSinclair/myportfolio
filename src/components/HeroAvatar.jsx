@@ -2,7 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { useMediaQuery } from "react-responsive";
 import { Avatar } from "./Avatar";
 import { TechOrbitButtons } from "./TechOrbitButtons";
-import { OrbitControls } from "@react-three/drei";
+
 
 const HeroAvatar = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
@@ -14,15 +14,13 @@ const HeroAvatar = () => {
         <ambientLight intensity={0.9} />
         <directionalLight position={[2, 3, 2]} intensity={2} castShadow />
         
-        <group scale={[3, 3, 3]} position={[0.0, -2.8, 2.2]} rotation={[-0.4, -0.4, 0.00]}>
+        <group scale={[3, 3, 3]} position={[0.0, -2.6, 2]} rotation={[-0.3, -0.4, 0.00]}>
           <Avatar />
         </group>
 
         <group position={[0, -2, 2.6]} rotation={[-0.2, -0.1, 0]} scale={[2.2, 2.2, 2.2]}>
           <TechOrbitButtons show={true} isAnimating={false} onSelect={(tech) => console.log(tech)} />
-        </group>
-
-        <OrbitControls /> 
+        </group>        
       </Canvas>
     );
   }
@@ -35,16 +33,16 @@ const HeroAvatar = () => {
       
       {/* 🕴️ Avatar Group */}
       <group
-        scale={[4.0, 4.0, 4.0]} 
-        position={[0.2, -4.5, 3]}
-        rotation={[-7, -0.4, -0.07]}
+        scale={[3.4, 3.4,3.4]} 
+        position={[0.1, -1.3, 2.2]}
+        rotation={[-6.75, -0.4, -0.07]}
       >
         <Avatar />
       </group>
 
       {/* 🔵 Buttons Group */}
       <group 
-        position={[0.0, -1.5, 4.5]} 
+        position={[0.0, 0.1, 3.8]} 
         rotation={[-0.5,-0.2, 0.0]} 
         scale={[2.5, 2.5, 2.5]}    
       >
@@ -53,9 +51,7 @@ const HeroAvatar = () => {
           isAnimating={false} 
           onSelect={(tech) => console.log(`${tech} clicked!`)} 
         />
-      </group>
-
-      <OrbitControls target={[0.10, -2.7, 1.10]} /> 
+      </group>      
     </Canvas>
   );
 };
