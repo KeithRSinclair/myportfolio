@@ -2,6 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import HeroAvatar from "./HeroAvatar";
 import { useNavigate } from "react-router-dom";
+import BlenderIcon from "/icons/blender.png";
+import ReactIcon from "/icons/react.png";
+import GsapIcon from "/icons/gsap.png";
+import InkscapeIcon from "/icons/inkscape.png";
+import ThreeIcon from "/icons/three.png";
+import UnityIcon from "/icons/unity.png";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -130,7 +136,7 @@ export default function Home() {
           {/* Tech Grid Area: Full screen row on mobile, Right 5-columns wide space on Desktop */}
           <div className="w-full lg:col-span-5 space-y-6 mt-2">
             <h3 className="text-xl font-bold text-slate-200 uppercase tracking-wider text-center lg:text-left">
-              Core Tech Stack
+              My Creative Pipeline
             </h3>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
@@ -138,14 +144,7 @@ export default function Home() {
               <div className="group relative rounded-2xl border border-slate-800 bg-slate-900/40 p-6 transition-all duration-300 hover:border-sky-500/50 hover:bg-slate-900/80 hover:shadow-[0_0_30px_rgba(14,165,233,0.15)]">
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-lg bg-orange-500/10 text-orange-400 group-hover:scale-110 transition-transform duration-300">
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15.5c-3.03 0-5.5-2.47-5.5-5.5s2.47-5.5 5.5-5.5 5.5 2.47 5.5 5.5-2.47 5.5-5.5 5.5zm0-9c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5zm0 5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
-                    </svg>
+                    <img src={BlenderIcon} alt="BlenderIcon" />
                   </div>
                   <div className="space-y-1">
                     <h4 className="text-lg font-bold text-white group-hover:text-orange-400 transition-colors duration-300">
@@ -166,37 +165,7 @@ export default function Home() {
               <div className="group relative rounded-2xl border border-slate-800 bg-slate-900/40 p-6 transition-all duration-300 hover:border-sky-500/50 hover:bg-slate-900/80 hover:shadow-[0_0_30px_rgba(14,165,233,0.15)]">
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-lg bg-sky-500/10 text-sky-400 group-hover:scale-110 transition-transform duration-300">
-                    <svg
-                      className="w-6 h-6 animate-[spin_20s_linear_infinite]"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <ellipse
-                        rx="10"
-                        ry="4.5"
-                        cx="12"
-                        cy="12"
-                        transform="rotate(0 12 12)"
-                      />
-                      <ellipse
-                        rx="10"
-                        ry="4.5"
-                        cx="12"
-                        cy="12"
-                        transform="rotate(60 12 12)"
-                      />
-                      <ellipse
-                        rx="10"
-                        ry="4.5"
-                        cx="12"
-                        cy="12"
-                        transform="rotate(120 12 12)"
-                      />
-                      <circle cx="12" cy="12" r="1.5" fill="currentColor" />
-                    </svg>
+                    <img src={ReactIcon} alt="ReactIcon" />
                   </div>
                   <div className="space-y-1">
                     <h4 className="text-lg font-bold text-white group-hover:text-sky-400 transition-colors duration-300">
@@ -217,14 +186,7 @@ export default function Home() {
               <div className="group relative rounded-2xl border border-slate-800 bg-slate-900/40 p-6 transition-all duration-300 hover:border-sky-500/50 hover:bg-slate-900/80 hover:shadow-[0_0_30px_rgba(14,165,233,0.15)]">
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-lg bg-indigo-500/10 text-indigo-400 group-hover:scale-110 transition-transform duration-300">
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path d="M12 2L2 22h20L12 2zm0 4.8L18.4 19H5.6L12 6.8z" />
-                    </svg>
+                    <img src={ThreeIcon} alt="ThreeIcon" />
                   </div>
                   <div className="space-y-1">
                     <h4 className="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors duration-300">
@@ -245,14 +207,7 @@ export default function Home() {
               <div className="group relative rounded-2xl border border-slate-800 bg-slate-900/40 p-6 transition-all duration-300 hover:border-sky-500/50 hover:bg-slate-900/80 hover:shadow-[0_0_30px_rgba(14,165,233,0.15)]">
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-lg bg-pink-500/10 text-pink-400 group-hover:scale-110 transition-transform duration-300">
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path d="M12 2L2 7.5v9L12 22l10-5.5v-9L12 2zm8 6.5v7l-8 4.4-8-4.4v-7l8-4.4 8 4.4z" />
-                    </svg>
+                    <img src={UnityIcon} alt="UnityIcon" />
                   </div>
                   <div className="space-y-1">
                     <h4 className="text-lg font-bold text-white group-hover:text-pink-400 transition-colors duration-300">

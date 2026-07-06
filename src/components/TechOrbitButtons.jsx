@@ -40,24 +40,24 @@ export function TechOrbitButtons({ onSelect, isAnimating, show }) {
     { config: ring3, items: ["blender", "unity"] },
   ];
 
-  // 🌊 Fix idle motion & spreading in TechOrbitButtons.jsx
+  // 🌊 PS Vita Bubble Style - Organic, ultra-subtle drift
   useFrame((state) => {
     if (!group.current) return;
     const t = state.clock.elapsedTime;
 
     group.current.children.forEach((child, i) => {
-      
       const baseY = child.userData?.baseY ?? child.position.y;
 
-     
-      child.position.y = baseY + Math.sin(t * 1.2 + i * 0.4) * 0.05;
+      // 1. Gentle, slow vertical float (Vita style)
+      child.position.y = baseY + Math.sin(t * 0.6 + i * 0.5) * 0.04;
 
-     
-      let s = 0.7 + Math.sin(t * 0.4 + i) * 0.01;
+      // 2. Micro-pulse: Scale only shifts between 0.695 and 0.705
+      // We add a Math.PI / 2 offset so the pulse is out-of-phase with the float
+      let s = 0.7 + Math.sin(t * 0.5 + i + Math.PI / 2) * 0.005;
+
       child.scale.set(s, s, s);
     });
   });
-
   // ✨ show / hide
   useEffect(() => {
     if (!group.current) return;
@@ -168,7 +168,7 @@ export function TechOrbitButtons({ onSelect, isAnimating, show }) {
                   toneMapped={false}
                   depthWrite={false}
                 />
-              </mesh>              
+              </mesh>
             </group>
           );
         }),
