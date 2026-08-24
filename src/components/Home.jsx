@@ -111,25 +111,22 @@ export default function Home() {
         </div>
 
         {/* Outer Grid Layout Layout Wrapper */}
-        <div className="grid gap-6 lg:grid-cols-12 items-center -mt-12 max-h-screen landscape:grid-cols-2 landscape:gap-2 lg:landscape:grid-cols-12">
-          {/* Avatar Area: Full screen row on mobile, Left 7-columns wide space on Desktop */}
-          <div className="w-full h-[45vh] sm:h-[50vh] lg:h-[60vh] lg:col-span-7 relative">
-            <div className="flex flex-col items-center justify-center h-full">
-              <div className="w-full h-full hero-3d-layout">
-                <HeroAvatar />
-              </div>
-              <div className="w-full flex justify-center items-center hero-button">
-                <button
-                  onClick={() => navigate("/contact")}
-                  className="absolute ml-2 lg:ml-4 md:ml-0 left-1/2 lg:left-1/4 md:left-1/2 -translate-x-1/2 bottom-0 md:bottom-8 lg:bottom-48 xl:bottom-56 z-50 px-8 py-3 rounded-xl font-semibold text-black shadow-[0_0_12px_rgba(255,255,255,0.8)] lg:landscape:bottom-32 hover:scale-110"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, rgb(56, 189, 248), rgb(168, 85, 247), rgb(244, 114, 182))",
-                  }}
-                >
-                  Contact Me
-                </button>
-              </div>
+        <div className="grid gap-4 lg:grid-cols-12 items-center mt-2 max-h-screen landscape:grid-cols-2 landscape:gap-2 lg:landscape:grid-cols-12">
+          <div className="w-full min-h-130 md:min-h-150 lg:min-h-120 lg:h-[70vh] lg:col-span-7 relative">
+            <div className="hero-3d-layout">
+              <HeroAvatar />
+            </div>
+            <div className="w-full flex justify-center items-center hero-button">
+              <button
+                onClick={() => navigate("/contact")}
+                className="absolute ml-2 lg:ml-4 md:ml-0 left-1/2 lg:left-1/4 md:left-1/2 -translate-x-1/2 bottom-0 md:bottom-8 lg:bottom-48 xl:bottom-56 z-50 px-8 py-3 rounded-xl font-semibold text-black shadow-[0_0_12px_rgba(255,255,255,0.8)] lg:landscape:bottom-32 hover:scale-110"
+                style={{
+                  background:
+                    "linear-gradient(90deg, rgb(56, 189, 248), rgb(168, 85, 247), rgb(244, 114, 182))",
+                }}
+              >
+                Contact Me
+              </button>
             </div>
           </div>
 
