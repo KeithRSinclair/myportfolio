@@ -51,9 +51,9 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
 
   const group = useRef();
   const mixer = useRef();
-  const actionRef = useRef();
-  const idleTimer = useRef(0);
-  const idleThreshold = useRef(5 + Math.random() * 5); // 5-10 seconds
+  const stage = useRef("wave");
+  const idleLoops = useRef(0);
+  const animationTimeout = useRef(null);
 
   const shirtMesh = useRef(null);
   const defaultMap = useRef(null);
@@ -76,6 +76,9 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
   });
 
   useEffect(() => {
+    const avatarGroup = group.current;
+    const shimmer = shimmerLight.current;
+
     if (shimmerLight.current)
       shimmerLight.current.color = new THREE.Color("#ffffff");
 
@@ -93,19 +96,69 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
 
     mixer.current = new THREE.AnimationMixer(scene);
 
-    // Prepare the initial wave animation
-    const waveClip =
-      THREE.AnimationClip.findByName(animations, "waving") || animations[0];
-    if (waveClip) {
-      const action = mixer.current.clipAction(waveClip);
-      action.clampWhenFinished = true;
-      action.loop = THREE.LoopOnce;
-      action.reset().play();
-      actionRef.current = action;
-    }
+    const actions = Object.fromEntries(
+      animations.map((clip) => [clip.name, mixer.current.clipAction(clip)]),
+    );
+    let currentAction = null;
+
+    const playAction = (name, loop = THREE.LoopOnce) => {
+      const action = actions[name];
+      if (!action) {
+        console.warn(`Animation "${name}" not found`);
+        return;
+      }
+
+      action.reset();
+      action.enabled = true;
+      action.setLoop(loop, loop === THREE.LoopOnce ? 1 : Infinity);
+      action.clampWhenFinished = loop === THREE.LoopOnce;
+      action.play();
+
+      if (currentAction && currentAction !== action) {
+        action.crossFadeFrom(currentAction, 0.35, true);
+      }
+      currentAction = action;
+    };
+
+    const startIdle = () => {
+      idleLoops.current = 0;
+      stage.current = "idle";
+      playAction("idle", THREE.LoopRepeat);
+    };
+
+    const handleFinished = (event) => {
+      if (stage.current === "wave" && event.action === actions.waving) {
+        startIdle();
+      } else if (
+        stage.current === "neckstretching" &&
+        event.action === actions.neckstretching
+      ) {
+        stage.current = "armstretching";
+        playAction("armstretching");
+      } else if (
+        stage.current === "armstretching" &&
+        event.action === actions.armstretching
+      ) {
+        startIdle();
+      }
+    };
+
+    const handleLoop = (event) => {
+      if (stage.current !== "idle" || event.action !== actions.idle) return;
+
+      idleLoops.current += 1;
+      if (idleLoops.current >= 2) {
+        stage.current = "neckstretching";
+        playAction("neckstretching");
+      }
+    };
+
+    mixer.current.addEventListener("finished", handleFinished);
+    mixer.current.addEventListener("loop", handleLoop);
+    playAction("waving");
 
     // Intro rotation
-    gsap.to(group.current.rotation, {
+    const introRotation = gsap.to(avatarGroup.rotation, {
       y: 0,
       duration: 3,
       ease: "power2.out",
@@ -117,9 +170,9 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
 
       isAnimating.current = true;
 
-      // Reset idle timer and threshold for next wave
-      idleTimer.current = 0;
-      idleThreshold.current = 5 + Math.random() * 5;
+      idleLoops.current = 0;
+      stage.current = "wave";
+      playAction("waving");
       setIsAnimating(true);
 
       const mat = shirtMesh.current.material;
@@ -134,24 +187,20 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
         },
       });
 
-      if (actionRef.current) {
-        actionRef.current.reset();
-        actionRef.current.play();
-      }
-
       gsap.fromTo(
-        shimmerLight.current,
+        shimmer,
         { intensity: 0 },
         { intensity: 2.5, duration: 1, yoyo: true, repeat: 1 },
       );
       gsap.fromTo(
-        shimmerLight.current.position,
+        shimmer.position,
         { x: -2.5 },
         { x: 2.5, duration: 2 },
       );
 
-      group.current.rotation.y = -Math.PI;
-      gsap.to(group.current.rotation, {
+      gsap.killTweensOf(avatarGroup.rotation);
+      avatarGroup.rotation.y = -Math.PI;
+      gsap.to(avatarGroup.rotation, {
         y: 0,
         duration: 1.6,
         ease: "power2.out",
@@ -159,42 +208,35 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
 
       triggerCamera();
 
-      setTimeout(() => {
+      animationTimeout.current = setTimeout(() => {
         isAnimating.current = false;
         setIsAnimating(false);
+        animationTimeout.current = null;
       }, 1800);
     };
 
     apiRef.current = switchShirt;
+    return () => {
+      introRotation.kill();
+      gsap.killTweensOf(avatarGroup.rotation);
+      gsap.killTweensOf(shimmer);
+      gsap.killTweensOf(shimmer.position);
+      if (animationTimeout.current) {
+        clearTimeout(animationTimeout.current);
+        animationTimeout.current = null;
+      }
+      mixer.current?.removeEventListener("finished", handleFinished);
+      mixer.current?.removeEventListener("loop", handleLoop);
+      mixer.current?.stopAllAction();
+      mixer.current?.uncacheRoot(scene);
+      mixer.current = null;
+      if (apiRef.current === switchShirt) apiRef.current = null;
+    };
   }, [scene, animations]);
 
   /* ---------------- ANIMATION LOOP ---------------- */
   useFrame((_, delta) => {
     mixer.current?.update(delta);
-
-    // Idle wave logic
-    if (!isAnimating.current && actionRef.current) {
-      idleTimer.current += delta;
-
-      if (idleTimer.current >= idleThreshold.current) {
-        const waveClip = THREE.AnimationClip.findByName(animations, "waving");
-        if (waveClip) {
-          const waveAction = mixer.current.clipAction(waveClip);
-
-          // Only play if not already running
-          if (!waveAction.isRunning()) {
-            waveAction.reset();
-            waveAction.setLoop(THREE.LoopOnce);
-            waveAction.clampWhenFinished = true;
-            waveAction.play();
-
-            // Reset idle timer and random threshold for next wave
-            idleTimer.current = 0;
-            idleThreshold.current = 5 + Math.random() * 5; // 5-10 seconds
-          }
-        }
-      }
-    }
   });
 
   return (
