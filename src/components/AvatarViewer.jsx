@@ -280,7 +280,7 @@ export default function AvatarViewer({ onLoaded, onTechClick }) {
   const triggerCamera = () => setCameraTrigger((v) => v + 1);
 
   const themes = {
-    default: "#FF00FF",
+    default: "#FFF",
     blender: "#EA7600",
     gsap: "#88CE02",
     inkscape: "#818181",
