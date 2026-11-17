@@ -9,7 +9,7 @@ import InkscapeIcon from "/icons/inkscape.png";
 import ThreeIcon from "/icons/three.png";
 import UnityIcon from "/icons/unity.png";
 
-export default function Home() {
+export default function Home({ isActive }) {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
 
@@ -28,6 +28,8 @@ export default function Home() {
     ));
 
   useEffect(() => {
+    if (!isActive) return;
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
@@ -61,12 +63,12 @@ export default function Home() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isActive]);
 
   return (
     <section
       ref={sectionRef}
-      className="bg-slate-950 text-slate-100 py-20 relative overflow-hidden"
+      className={`${isActive ? "" : "hidden"} bg-slate-950 text-slate-100 py-20 relative overflow-hidden`}
     >
       {/* Subtle background ambient glow */}
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -114,7 +116,7 @@ export default function Home() {
         <div className="grid gap-4 lg:grid-cols-12 items-center mt-2 max-h-screen landscape:grid-cols-2 landscape:gap-2 lg:landscape:grid-cols-12">
           <div className="w-full min-h-130 md:min-h-150 lg:min-h-120 lg:h-[70vh] lg:col-span-7 relative">
             <div className="hero-3d-layout">
-              <HeroAvatar />
+              <HeroAvatar isActive={isActive} />
             </div>
             <div className="w-full flex justify-center items-center hero-button">
               <button

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AvatarViewer from "./AvatarViewer";
 
-const HeroAvatar = () => {
+const HeroAvatar = ({ isActive }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const handleTechClick = (color) => {
@@ -13,6 +13,7 @@ const HeroAvatar = () => {
       <AvatarViewer
         onLoaded={() => setIsLoaded(true)}
         onTechClick={handleTechClick}
+        isActive={isActive}
       />
     </div>
   );

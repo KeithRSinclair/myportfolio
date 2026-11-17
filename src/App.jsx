@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ContactForm from "./components/ContactForm";
@@ -8,6 +8,21 @@ import Home from "./components/Home";
 import { ProgressBar } from "./components/ProgressBar";
 import ScrollToTop from "./components/ScrollToTop";
 
+function AppRoutes() {
+  const { pathname } = useLocation();
+
+  return (
+    <>
+      <Home isActive={pathname === "/"} />
+      <Routes>
+        <Route path="/" element={null} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -16,11 +31,7 @@ function App() {
         <Navbar />
         <ProgressBar />
         <main className="flex-1 flex flex-col justify-start overflow-x-hidden">
-          <Routes>
-            <Route path="/" element={<Home />} />            
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
+          <AppRoutes />
         </main>
         <Footer />
       </div>

@@ -1,11 +1,23 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
+import { SkeletonUtils } from "three-stdlib";
 import * as THREE from "three";
 import { gsap } from "gsap";
 import Loader from "./Loader";
 import { TechOrbitButtons } from "./TechOrbitButtons";
 import { OrbitControls } from "@react-three/drei";
+
+const themes = {
+  default: "#FFF",
+  blender: "#EA7600",
+  gsap: "#88CE02",
+  inkscape: "#818181",
+  react: "#61DAFB",
+  three: "#F9F9F9",
+  unity: "#3A5BC7",
+};
+
 /* ---------------- READY ---------------- */
 function AvatarReady({ children, onReady }) {
   useEffect(() => {
@@ -48,6 +60,7 @@ function ResponsiveScene({ children }) {
 /* ---------------- MODEL ---------------- */
 function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
   const { scene, animations } = useGLTF("/avatar.glb");
+  const modelScene = useMemo(() => SkeletonUtils.clone(scene), [scene]);
 
   const group = useRef();
   const mixer = useRef();
@@ -82,19 +95,20 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
     if (shimmerLight.current)
       shimmerLight.current.color = new THREE.Color("#ffffff");
 
-    scene.traverse((child) => {
+    modelScene.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
       if (child.name === "avaturn_look_0") {
+        child.material = child.material.clone();
         shirtMesh.current = child;
         defaultMap.current = child.material.map;
         child.material.transparent = true;
       }
     });
 
-    mixer.current = new THREE.AnimationMixer(scene);
+    mixer.current = new THREE.AnimationMixer(modelScene);
 
     const actions = Object.fromEntries(
       animations.map((clip) => [clip.name, mixer.current.clipAction(clip)]),
@@ -215,7 +229,35 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
       }, 1800);
     };
 
-    apiRef.current = switchShirt;
+    const resetAppearance = () => {
+      if (!shirtMesh.current) return;
+
+      if (animationTimeout.current) {
+        clearTimeout(animationTimeout.current);
+        animationTimeout.current = null;
+      }
+
+      const material = shirtMesh.current.material;
+      gsap.killTweensOf(material);
+      gsap.killTweensOf(avatarGroup.rotation);
+      gsap.killTweensOf(shimmer);
+      gsap.killTweensOf(shimmer.position);
+
+      material.map = defaultMap.current;
+      material.opacity = 1;
+      material.needsUpdate = true;
+      avatarGroup.rotation.y = 0;
+      shimmer.intensity = 0;
+
+      isAnimating.current = false;
+      setIsAnimating(false);
+      idleLoops.current = 0;
+      stage.current = "idle";
+      playAction("idle", THREE.LoopRepeat);
+    };
+
+    const modelApi = { switchShirt, resetAppearance };
+    apiRef.current = modelApi;
     return () => {
       introRotation.kill();
       gsap.killTweensOf(avatarGroup.rotation);
@@ -228,11 +270,11 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
       mixer.current?.removeEventListener("finished", handleFinished);
       mixer.current?.removeEventListener("loop", handleLoop);
       mixer.current?.stopAllAction();
-      mixer.current?.uncacheRoot(scene);
+      mixer.current?.uncacheRoot(modelScene);
       mixer.current = null;
-      if (apiRef.current === switchShirt) apiRef.current = null;
+      if (apiRef.current === modelApi) apiRef.current = null;
     };
-  }, [scene, animations]);
+  }, [modelScene, animations]);
 
   /* ---------------- ANIMATION LOOP ---------------- */
   useFrame((_, delta) => {
@@ -241,7 +283,7 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
 
   return (
     <group ref={group} rotation={[0, -Math.PI, 0]} position={[0, -0.1, 0]}>
-      <primitive object={scene} />
+      <primitive object={modelScene} />
       {/* pedestal */}
       <mesh position={[0, -0.06, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[0.8, 0.8, 0.14, 64]} />
@@ -270,24 +312,15 @@ function AvatarModel({ apiRef, accentColor, setIsAnimating, triggerCamera }) {
 }
 
 /* ---------------- MAIN ---------------- */
-export default function AvatarViewer({ onLoaded, onTechClick }) {
+export default function AvatarViewer({ onLoaded, onTechClick, isActive = true }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [cameraTrigger, setCameraTrigger] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
 
   const apiRef = useRef(null);
+  const previousIsActive = useRef(isActive);
 
   const triggerCamera = () => setCameraTrigger((v) => v + 1);
-
-  const themes = {
-    default: "#FFF",
-    blender: "#EA7600",
-    gsap: "#88CE02",
-    inkscape: "#818181",
-    react: "#61DAFB",
-    three: "#F9F9F9",
-    unity: "#3A5BC7",
-  };
 
   const [accentColor, setAccentColor] = useState(themes.default);
 
@@ -295,6 +328,15 @@ export default function AvatarViewer({ onLoaded, onTechClick }) {
   useEffect(() => {
     triggerCamera();
   }, []);
+
+  useEffect(() => {
+    if (isActive && !previousIsActive.current) {
+      setAccentColor(themes.default);
+      apiRef.current?.resetAppearance();
+    }
+
+    previousIsActive.current = isActive;
+  }, [isActive]);
 
   return (
     <div className="w-full flex flex-col items-center md:items-start">
@@ -318,7 +360,7 @@ export default function AvatarViewer({ onLoaded, onTechClick }) {
             onSelect={(tech) => {
               const color = themes[tech];
               setAccentColor(color);
-              apiRef.current?.(tech);             
+              apiRef.current?.switchShirt(tech);
               onTechClick?.(color);
             }}
           />
